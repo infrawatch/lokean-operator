@@ -1,0 +1,7 @@
+apiVersion: lokean.infra.watch/v1alpha1
+kind: Lokean
+metadata:
+  name: example-lokean
+spec:
+  # Add fields here
+  size: 3
