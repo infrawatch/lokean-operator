@@ -1,0 +1,62 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: '{{ meta.name }}-lokean'
+  namespace: '{{ meta.namespace }}'
+spec:
+  replicas: {{ size }}
+  progressDeadlineSeconds: 600
+  revisionHistoryLimit: 10
+  strategy:
+    rollingUpdate:
+      maxSurge: 50%
+      maxUnavailable: 50%
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      app: lokean
+      lokean: '{{ meta.name }}'
+  template:
+    metadata:
+      labels:
+        app: lokean
+        lokean: '{{ meta.name }}'
+{% if lokean_resource_configmap is defined %}
+        lokean-config-resource-name: {{ lokean_resource_configmap.env | k8s_config_resource_name }}
+{% endif %}
+    spec:
+      containers:
+      - name: bridge
+        image: '{{ bridge_image_path }}'
+        args:
+        - --amqp_url
+        - amqp://{{ amqp_url | default('messaging-internal-' + meta.name + '.' + meta.namespace + '.svc:5672/lokean/logs:rsyslog') }}
+        - --verbose
+        - --block
+        - --stat_period
+        - "60"
+        - --rbc
+        - "15000"
+        - --gw_unix=/tmp/lokean
+        volumeMounts:
+        - mountPath: /tmp
+          name: socket-dir
+      - name: lokean
+        image: '{{ container_image_path }}'
+        volumeMounts:
+        - mountPath: /tmp
+          name: socket-dir
+{% if lokean_resource_configmap is defined %}
+        - name: lokean-config
+          mountPath: /config
+        args:
+        - -config=/config/lokean_config.ini
+{%   endif %}
+      volumes:
+      - name: socket-dir
+        emptyDir: {}
+{% if lokean_resource_configmap is defined %}
+      - name: lokean-config
+        configMap:
+          name: {{ meta.name }}-lokean
+{%   endif %}

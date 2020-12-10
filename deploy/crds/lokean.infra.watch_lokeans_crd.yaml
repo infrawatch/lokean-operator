@@ -14,8 +14,67 @@ spec:
     status: {}
   validation:
     openAPIV3Schema:
+      properties:
+        apiVersion:
+          description: 'APIVersion defines the versioned schema of this representation
+            of an object. Servers should convert recognized schemas to the latest
+            internal value, and may reject unrecognized values. More info: https://github.com/kubernetes/community/blob/master/contributors/devel/sig-architecture/api-conventions.md#resources'
+          type: string
+        kind:
+          description: 'Kind is a string value representing the REST resource this
+            object represents. Servers may infer this from the endpoint the client
+            submits requests to. Cannot be updated. In CamelCase. More info: https://github.com/kubernetes/community/blob/master/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+          type: string
+        metadata:
+          type: object
+        spec:
+          description: 'LokeanSpec is a specification of the desired behavior
+            of the Lokean deployment. More info: https://github.com/kubernetes/community/blob/master/contributors/devel/sig-architecture/api-conventions.md#spec-and-status'
+          properties:
+            logFile:
+              description: Path to a log file for Lokean
+              type: string
+            containerImagePath:
+              description: Path to the container image this Operator will deploy.
+                Value is defined as the standard registry/image_name:tag format.
+              type: string
+            logLevel:
+              description: Log level to use by lokean, the possibilities are 'DEBUG', 'INFO', 'WARNING', 'ERROR'
+              type: string
+            messageTransport:
+              description: The transport to use for receiving logs. The possibilities are 'amqp1', 'socket'
+              type: string
+            amqpUrl:
+              description: The URL where to expect logs when using the amqp1 transport
+              type: string
+            amqpSendTimeout:
+              description: Send timeout when using the amqp1 transport
+              type: integer
+            amqpClientName:
+              description: Name of the amqp client.
+              type: string
+            amqpListenChannels:
+              description: List of amqp listen channels.
+              #TODO figure out how to use some kind of list type here
+              type: string
+            amqpListenPrefetch:
+              description: How many messages to prefetch when using amqp
+              type: integer
+            socketUrl:
+              description: The socket URL when using the socket transport
+              type: string
+            lokiUrl:
+              description: Loki URL
+              type: string
+            lokiBatchSize:
+              description: Maximum size of each batch of messages sent to Loki.
+              type: integer
+            lokiMaxWaitTime:
+              description: Maximum wait time between each send to Loki in ms
+              type: int
+          type: object
       type: object
-      x-kubernetes-preserve-unknown-fields: true
+  version: v1alpha1
   versions:
   - name: v1alpha1
     served: true

@@ -15,9 +15,19 @@ spec:
     spec:
       serviceAccountName: lokean-operator
       containers:
+        - name: ansible
+          command:
+          - /usr/local/bin/ao-logs
+          - /tmp/ansible-operator/runner
+          - stdout
+          image: PLACEHOLDER-OPERATOR-URL
+          imagePullPolicy: Always
+          volumeMounts:
+          - mountPath: /tmp/ansible-operator/runner
+            name: runner
+            readOnly: true
         - name: lokean-operator
-          # Replace this with the built image name
-          image: "REPLACE_IMAGE"
+          image: PLACEHOLDER-OPERATOR-URL
           imagePullPolicy: "Always"
           volumeMounts:
           - mountPath: /tmp/ansible-operator/runner
@@ -35,6 +45,10 @@ spec:
               value: "lokean-operator"
             - name: ANSIBLE_GATHERING
               value: explicit
+            - name: LOKEAN_IMAGE
+              value: PLACEHOLDER-LOKEAN-URL
+            - name: BRIDGE_SMARTGATEWAY_IMAGE
+              value: quay.io/infrawatch/sg-bridge:latest
       volumes:
         - name: runner
           emptyDir: {}

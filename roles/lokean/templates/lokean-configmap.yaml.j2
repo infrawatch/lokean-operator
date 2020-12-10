@@ -1,0 +1,26 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ meta.name }}-lokean
+  namespace: {{ meta.namespace }}
+data:
+  "lokean_config.ini": |
+    [default]
+        logFile="{{ log_file | default('/dev/stderr') }}"
+        logLevel="{{ log_level | default('INFO') }}"
+        message_transport="{{ message_transport | default('socket') }}"
+
+    [socket]
+        in_address="{{ socket_url | default('/tmp/lokean') }}"
+
+    [amqp1]
+        connection="{{ amqp_url | default('messaging-internal-' + meta.name + '.' + meta.namespace + '.svc:5672') }}"
+        send_timeout="{{ amqp_send_timeout | default(2) }}"
+        client_name="{{ amqp_client_name | default('amqp_client') }}"
+        listen_channels="{{ amqp_listen_channels | default('lokean/logs:rsyslog') }}"
+        listen_prefetch="{{ amqp_listen_prefetch | default(-1) }}"
+
+    [loki]
+        connection="{{ loki_url | default('http://' + meta.name + '.' + meta.namespace + '.svc:3100') }}"
+        batch_size="{{ loki_batch_size | default(20) }}"
+        max_wait_time="{{ loki_max_wait_time | default(100) }}"

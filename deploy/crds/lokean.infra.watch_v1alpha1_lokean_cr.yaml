@@ -4,4 +4,7 @@ metadata:
   name: example-lokean
 spec:
   # Add fields here
-  size: 3
+  size: 1
+  amqpUrl: amq-interconnect:5672/lokean/logs:rsyslog
+  logFile: /dev/stderr
+  logLevel: DEBUG

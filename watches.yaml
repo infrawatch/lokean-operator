@@ -2,4 +2,4 @@
 - version: v1alpha1
   group: lokean.infra.watch
   kind: Lokean
-  role: lokean
+  role: /opt/ansible/roles/lokean

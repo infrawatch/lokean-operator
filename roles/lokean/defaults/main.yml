@@ -1,2 +1,4 @@
 ---
 # defaults file for lokean
+size: 1
+state: present
