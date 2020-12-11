@@ -20,14 +20,14 @@ spec:
           - /usr/local/bin/ao-logs
           - /tmp/ansible-operator/runner
           - stdout
-          image: PLACEHOLDER-OPERATOR-URL
+          image: quay.io/infrawatch/lokean-operator:latest
           imagePullPolicy: Always
           volumeMounts:
           - mountPath: /tmp/ansible-operator/runner
             name: runner
             readOnly: true
         - name: lokean-operator
-          image: PLACEHOLDER-OPERATOR-URL
+          image: quay.io/infrawatch/lokean-operator:latest
           imagePullPolicy: "Always"
           volumeMounts:
           - mountPath: /tmp/ansible-operator/runner
@@ -46,7 +46,7 @@ spec:
             - name: ANSIBLE_GATHERING
               value: explicit
             - name: LOKEAN_IMAGE
-              value: PLACEHOLDER-LOKEAN-URL
+              value: quay.io/infrawatch/lokean:latest
             - name: BRIDGE_SMARTGATEWAY_IMAGE
               value: quay.io/infrawatch/sg-bridge:latest
       volumes:

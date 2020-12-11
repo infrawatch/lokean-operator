@@ -3,7 +3,7 @@ OpenShift Operator for managing the lifecycle of Lokean
 
 ## Build the operator
 ```
-# registry path, for example "quay.io/jwysogla/lokean-operator:latest"
+# registry path, for example "quay.io/infrawatch/lokean-operator:latest"
 REGISTRY_PATH=
 buildah bud -f build/Dockerfile -t $(REGISTRY_PATH) .
 buildah push --tls-verify=false $(REGISTRY_PATH)

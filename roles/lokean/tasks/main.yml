@@ -7,7 +7,7 @@
 
 - name: "Set Lokean container image"
   set_fact:
-    container_image_path: "{{ lookup('env', 'LOKEAN_IMAGE') | default('PLACEHOLDER-LOKEAN-URL', true) }}"
+    container_image_path: "{{ lookup('env', 'LOKEAN_IMAGE') | default('quay.io/infrawatch/lokean:latest', true) }}"
     bridge_image_path: "{{ lookup('env', 'BRIDGE_SMARTGATEWAY_IMAGE') | default('quay.io/infrawatch/sg-bridge:latest', true) }}"
 
 - name: Get Lokean ConfigMap Environment
